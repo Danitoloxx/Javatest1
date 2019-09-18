@@ -20,6 +20,8 @@ function saveTask(e) {
         localStorage.setItem('tasks', JSON.stringify(tasks));
     }   
     
+    getTask();
+    document.getElementById('formTask').reset();
     e.preventDefault();
     
 }
@@ -33,17 +35,27 @@ function getTask() {
     for(let i = 0; i < tasks.length; i++) {
         
         let title = tasks[i].title;
-        let description = tasks[i].title;
+        let description = tasks[i].description;
         
-        tasksView.innerHTML = `<div class = "card">
-            <div class = "card-body">
-                <p> $(title) - $(description)</p>
-                <a class = "btn btn-danger"></a>
-            </div>        
-        </div>`
-        
-        console.log(tasks[i])
+        tasksView.innerHTML = `<div class ="card mb-3">
+            <div class="card-body">
+                <p>${title} - ${description}</p>
+                <a class="btn btn-danger" onclick="deleteTask('${title}')">
+                    Delete
+                </a>
+            </div>
+        </div>`;
     }
 }
 
+function deleteTask(title) {
+    let tasks = JSON.parse(localStorage.getItem('tasks'));
+    for(let i = 0; i < tasks.length; i++) {
+        if(tasks[i].title == title) {
+            tasks.splice(i, 1); 
+        }
+    }
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    getTask();
+}
 getTask();
